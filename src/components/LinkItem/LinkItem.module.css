@@ -1,0 +1,196 @@
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem;
+    border-radius: 14px;
+    transition: all 0.13s ease;
+    font-size: 0.95rem;
+    user-select: none;
+    border: 2px solid transparent;
+}
+
+.item:hover {
+    background-color: var(--color-light);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.faviconContainer {
+    position: relative;
+    height: 28px;
+    width: 28px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--color-med-light);
+}
+
+.faviconPlaceholder {
+    background-color: var(--color-med-light);
+    color: white;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.favicon {
+    width: 28px;
+    height: 28px;
+    object-fit: fill;
+}
+
+.content {
+    min-width: 0;
+}
+
+.title {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.subtitle {
+    color: var(--color-med);
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.url {
+    color: var(--color-med);
+}
+
+.dateAdded {
+    color: var(--color-med);
+    font-size: 0.9rem;
+    visibility: hidden;
+    transition: all 0.13s ease;
+    transform: translateX(5px);
+    opacity: 0;
+    user-select: none;
+}
+
+.item:hover .dateAdded {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.menuContainer {
+    position: relative;
+}
+
+.moreButton {
+    padding: 0.3rem 0.8rem;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--color-med);
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.moreButton:hover {
+    background-color: var(--color-light);
+}
+
+.menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0.3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    z-index: 10;
+}
+
+.menu button {
+    padding: 0.4rem 0.8rem;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    text-align: left;
+    cursor: pointer;
+    color: var(--color-med);
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.menu button:hover {
+    background-color: var(--color-light);
+}
+
+.editForm {
+    width: 100%;
+}
+
+.editForm input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--color-med-light);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.editForm input:focus {
+    border-color: var(--color-blue);
+    outline: none;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.buttons button[type="submit"] {
+    background-color: var(--color-blue);
+    color: white;
+}
+
+.buttons button[type="button"] {
+    background-color: var(--color-light);
+    color: var(--color-med);
+}

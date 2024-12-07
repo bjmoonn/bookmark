@@ -1,0 +1,16 @@
+.container {
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+.list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.folderLink {
+    text-decoration: none;
+    color: inherit;
+} 

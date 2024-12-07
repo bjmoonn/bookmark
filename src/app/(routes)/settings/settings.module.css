@@ -1,0 +1,63 @@
+.container {
+  padding: 1rem 0;
+  margin: 0 auto;
+}
+
+.section {
+  margin: 2rem 0;
+}
+
+
+.dangerButton {
+  padding: 0.6rem 1.2rem;
+  background-color: #ff4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.13s ease;
+}
+
+.dangerButton:hover {
+  background-color: #ff2222;
+}
+
+.dangerButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.confirmationBox {
+  padding: 1rem;
+  background-color: var(--color-light);
+  border-radius: 12px;
+}
+
+.confirmationBox p {
+  color: var(--color-med);
+  margin-bottom: 1rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cancelButton {
+  padding: 0.6rem 1.2rem;
+  background-color: var(--color-med-light);
+  color: var(--color-med);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.13s ease;
+}
+
+.cancelButton:hover {
+  background-color: var(--color-med);
+  color: white;
+} 

@@ -1,0 +1,26 @@
+.inputContainer input {
+    background-color: var(--color-light);
+    border: none;
+    padding: 0.9rem;
+    outline: none;
+    border-radius: 16px;
+    border: 3px solid transparent;
+    transition: all 0.13s ease;
+    font-size: 0.98rem;
+    font-family: inherit;
+    font-weight: 500;
+    width: 100%;
+}
+.inputContainer input:focus {
+    border-color: var(--color-blue);
+}
+
+.inputContainer input::placeholder {
+    color: var(--color-med);
+    user-select: none;
+}
+
+.inputContainer input:disabled {
+    border-color: var(--color-blue);
+    opacity: 0.5;
+}

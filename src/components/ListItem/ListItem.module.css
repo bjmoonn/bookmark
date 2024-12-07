@@ -1,0 +1,201 @@
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem;
+    border-radius: 14px;
+    transition: all 0.13s ease;
+    font-size: 0.95rem;
+    user-select: none;
+    position: relative;
+}
+
+.item:hover {
+    background-color: var(--color-light);
+}
+
+a.normalize {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.faviconContainer {
+    position: relative;
+    height: 28px;
+    width: 28px;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.faviconPlaceholder {
+    background-color: var(--color-med-light);
+    color: white;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.title {
+    font-weight: 500;
+}
+
+.url {
+    color: var(--color-med);
+}
+
+.dateAdded {
+    color: var(--color-med);
+    font-size: 0.9rem;
+    visibility: hidden;
+    transition: all 0.13s ease;
+    transform: translateX(5px);
+    opacity: 0;
+}
+
+.item:hover .dateAdded {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(0px);
+}
+
+.menuContainer {
+    position: relative;
+}
+
+.moreButton {
+    padding: 0.3rem 0.8rem;
+    background-color: var(--color-light);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--color-med);
+    transition: all 0.13s ease;
+}
+
+.moreButton:hover {
+    background-color: var(--color-med-light);
+    color: var(--color-dark);
+}
+
+.menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    z-index: 10;
+}
+
+.menu button {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+.menu button:hover {
+    background-color: var(--color-light);
+}
+
+.editing {
+    background-color: var(--color-light);
+    padding: 1rem;
+}
+
+.editForm {
+    width: 100%;
+}
+
+.field {
+    margin-bottom: 1rem;
+}
+
+.field label {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--color-med);
+    font-size: 0.9rem;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--color-med-light);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: var(--color-blue);
+    outline: none;
+}
+
+.field textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.buttons button[type="submit"] {
+    background-color: var(--color-blue);
+    color: white;
+}
+
+.buttons button[type="button"] {
+    background-color: var(--color-light);
+    color: var(--color-med);
+}
+
+.colorCircle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}

@@ -1,0 +1,28 @@
+:root {
+  --color-blue: #4676EE;
+
+  --color-light: #F7F7F9;
+  --color-med-light: #CCC;
+  --color-med: #9D9D9D;
+  --color-dark: #333333;
+
+  --color-supporting-green: #65A494;
+  --color-supporting-violet: #AE93D4;
+  --color-supporting-brown: #7C6357;
+  --color-supporting-purple: #5D64CC;
+
+  --font-inter: 'Inter', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box
+  ;
+  font-family: var(--font-inter);
+}
+
+.wrapper {
+  width: 700px;
+  margin: 0 auto;
+}
