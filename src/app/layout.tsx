@@ -1,6 +1,7 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 import Navigation from '@/components/Navigation/index'
+import { Toaster } from 'sonner'
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -23,6 +24,7 @@ export default function RootLayout({
         <div className="wrapper">
           <Navigation />
           {children}
+          <Toaster position="bottom-right" />
         </div>
       </body>
     </html>

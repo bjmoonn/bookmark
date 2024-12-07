@@ -6,10 +6,15 @@ import type { Folder } from '@/types/bookmark';
 import LinkField from '@/components/LinkField/LinkField';
 import ListItem from '@/components/ListItem/ListItem';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export default function FoldersPage() {
     const [folders, setFolders] = useState<Folder[]>([]);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        document.title = 'Folders - Bookmarks';
+    }, []);
 
     useEffect(() => {
         fetch('/api/folders')
@@ -35,10 +40,11 @@ export default function FoldersPage() {
             });
 
             if (!response.ok) throw new Error('Failed to add folder');
-
             setFolders(prev => [...prev, newFolder]);
+            toast.success('Folder created successfully');
         } catch (error) {
             console.error('Failed to add folder:', error);
+            toast.error('Failed to create folder');
         }
         setLoading(false);
     }
@@ -52,12 +58,13 @@ export default function FoldersPage() {
             });
 
             if (!response.ok) throw new Error('Failed to update folder');
-
             setFolders(prev => prev.map(folder => 
                 folder.id === id ? { ...folder, name: data.title } : folder
             ));
+            toast.success('Folder updated successfully');
         } catch (error) {
             console.error('Failed to update folder:', error);
+            toast.error('Failed to update folder');
         }
     }
 
@@ -68,10 +75,11 @@ export default function FoldersPage() {
             });
 
             if (!response.ok) throw new Error('Failed to delete folder');
-
             setFolders(prev => prev.filter(folder => folder.id !== id));
+            toast.success('Folder deleted successfully');
         } catch (error) {
             console.error('Failed to delete folder:', error);
+            toast.error('Failed to delete folder');
         }
     }
 

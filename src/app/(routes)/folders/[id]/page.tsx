@@ -27,6 +27,12 @@ export default function FolderPage() {
         }).catch(console.error);
     }, [id]);
 
+    useEffect(() => {
+        if (folder?.name) {
+            document.title = `${folder.name} - Bookmarks`;
+        }
+    }, [folder?.name]);
+
     async function handleDeleteBookmark(id: number) {
         try {
             // Remove bookmark from folder
@@ -69,8 +75,10 @@ export default function FolderPage() {
                         key={bookmark.id}
                         id={bookmark.id}
                         title={bookmark.title}
+                        url={bookmark.url}
                         subtitle={new URL(bookmark.url).hostname}
                         icon={bookmark.favicon}
+                        tags={bookmark.tags}
                         createdAt={bookmark.createdAt}
                         handleDelete={handleDeleteBookmark}
                     />

@@ -6,6 +6,7 @@ import type { Tag } from '@/types/bookmark';
 import LinkField from '@/components/LinkField/LinkField';
 import ListItem from '@/components/ListItem/ListItem';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 // generate a consistent color based on tag name
 function generateTagColor(name: string): string {
@@ -21,6 +22,11 @@ export default function TagsPage() {
     // state for tags list and loading status
     const [tags, setTags] = useState<Tag[]>([]);
     const [loading, setLoading] = useState(false);
+
+    // set page title
+    useEffect(() => {
+        document.title = 'Tags - Bookmarks';
+    }, []);
 
     // fetch tags on component mount
     useEffect(() => {
@@ -49,8 +55,10 @@ export default function TagsPage() {
 
             if (!response.ok) throw new Error('Failed to add tag');
             setTags(prev => [...prev, newTag]);
+            toast.success('Tag created successfully');
         } catch (error) {
             console.error('Failed to add tag:', error);
+            toast.error('Failed to create tag');
         }
         setLoading(false);
     }
@@ -68,8 +76,10 @@ export default function TagsPage() {
             setTags(prev => prev.map(tag => 
                 tag.id === id ? { ...tag, name: data.title } : tag
             ));
+            toast.success('Tag updated successfully');
         } catch (error) {
             console.error('Failed to update tag:', error);
+            toast.error('Failed to update tag');
         }
     }
 
@@ -82,8 +92,10 @@ export default function TagsPage() {
 
             if (!response.ok) throw new Error('Failed to delete tag');
             setTags(prev => prev.filter(tag => tag.id !== id));
+            toast.success('Tag deleted successfully');
         } catch (error) {
             console.error('Failed to delete tag:', error);
+            toast.error('Failed to delete tag');
         }
     }
 

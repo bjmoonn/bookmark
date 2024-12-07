@@ -6,6 +6,7 @@ import LinkField from '@/components/LinkField/LinkField'
 import LinkItem from '@/components/LinkItem/LinkItem';
 import type { Bookmark } from '@/types/bookmark';
 import BookmarkForm from '@/components/BookmarkForm/BookmarkForm';
+import { toast } from 'sonner';
 
 const API_KEY_TO_USE = process.env.NEXT_PUBLIC_LINK_API
 
@@ -13,6 +14,11 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false)
   const [links, setLinks] = useState<Bookmark[]>([])
   const [pendingBookmark, setPendingBookmark] = useState<any>(null);
+
+  // set page title
+  useEffect(() => {
+    document.title = 'Home - Bookmarks';
+  }, []);
 
   // fetch bookmarks on mount
   useEffect(() => {
@@ -23,38 +29,39 @@ export default function Home() {
   }, [])
 
   async function handleAddLink(link: string) {
-    if(loading) return
-    if(!link) return
-    setLoading(true)
+    if(loading) return;
+    if(!link) return;
+    setLoading(true);
 
-    const formattedLink = link.startsWith('http') ? link : `https://${link}`
-
-    let linkPreview: any = {}
-    
     try {
+      // Format URL if needed
+      const formattedLink = link.startsWith('http') ? link : `https://${link}`;
+
+      // Fetch link preview
       const response = await fetch(`https://api.linkpreview.net/?key=${API_KEY_TO_USE}&q=${encodeURI(formattedLink)}`);
-      linkPreview = await response.json();
+      const linkPreview = await response.json();
+
+      if (!linkPreview?.title) {
+        toast.error('Could not fetch link preview');
+        setLoading(false);
+        return;
+      }
+
+      // Set pending bookmark to show BookmarkForm
+      setPendingBookmark({
+        id: Date.now(),
+        favicon: linkPreview.image,
+        title: linkPreview.title,
+        url: linkPreview.url || formattedLink,
+        summary: linkPreview.description || '',
+        tags: [],
+        createdAt: new Date().toISOString()
+      });
     } catch (error) {
-      console.error(error)
-      setLoading(false)
-      return
+      console.error('Failed to fetch link preview:', error);
+      toast.error('Failed to fetch link preview');
     }
 
-    if (!linkPreview?.title) {
-      setLoading(false)
-      return
-    }
-
-    // instead of saving immediately, set as pending
-    setPendingBookmark({
-      id: Date.now(),
-      favicon: linkPreview.image,
-      title: linkPreview.title,
-      url: linkPreview.url,
-      summary: linkPreview.description || '',
-      createdAt: new Date().toISOString()
-    });
-    
     setLoading(false);
   }
 
@@ -101,8 +108,11 @@ export default function Home() {
 
             if (!tagResponse.ok) throw new Error('Failed to update tag');
         }
+
+        toast.success('Bookmark added successfully');
     } catch (error) {
         console.error('Failed to save bookmark:', error);
+        toast.error('Failed to save bookmark');
     }
 
     setPendingBookmark(null);
@@ -120,8 +130,10 @@ export default function Home() {
 
       // update local state
       setLinks(prev => prev.filter(link => link.id !== id));
+      toast.success('Bookmark deleted successfully');
     } catch (error) {
       console.error('Failed to delete bookmark:', error);
+      toast.error('Failed to delete bookmark');
     }
   }
 
@@ -139,8 +151,10 @@ export default function Home() {
       setLinks(prev => prev.map(link => 
         link.id === id ? { ...link, ...data } : link
       ));
+      toast.success('Bookmark updated successfully');
     } catch (error) {
       console.error('Failed to update bookmark:', error);
+      toast.error('Failed to update bookmark');
     }
   }
 
@@ -153,8 +167,11 @@ export default function Home() {
             key={link.id}
             id={link.id}
             title={link.title}
+            url={link.url}
+            summary={link.summary}
             subtitle={new URL(link.url).hostname}
             icon={link.favicon}
+            tags={link.tags}
             createdAt={link.createdAt}
             handleDelete={handleDelete}
             handleEdit={handleEdit}

@@ -57,7 +57,6 @@ const LinkField = ({
         }
     }
 
-    // validate on blur
     function handleBlur() {
         if (input.trim()) {
             validateInput(input);

@@ -12,8 +12,8 @@ export default function TagPage() {
     const [tag, setTag] = useState<Tag | null>(null);
     const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
 
+    // Fetch data effect
     useEffect(() => {
-        // Fetch tag and its bookmarks
         Promise.all([
             fetch(`/api/tags/${id}`).then(res => res.json()),
             fetch('/api/bookmarks').then(res => res.json())
@@ -27,6 +27,12 @@ export default function TagPage() {
         }).catch(console.error);
     }, [id]);
 
+    useEffect(() => {
+        if (tag?.name) {
+            document.title = `${tag.name} - Bookmarks`;
+        }
+    }, [tag?.name]);
+    
     async function handleRemoveBookmark(id: number) {
         try {
             // Remove bookmark from tag
@@ -69,8 +75,10 @@ export default function TagPage() {
                         key={bookmark.id}
                         id={bookmark.id}
                         title={bookmark.title}
+                        url={bookmark.url}
                         subtitle={new URL(bookmark.url).hostname}
                         icon={bookmark.favicon}
+                        tags={bookmark.tags}
                         createdAt={bookmark.createdAt}
                         handleDelete={handleRemoveBookmark}
                     />

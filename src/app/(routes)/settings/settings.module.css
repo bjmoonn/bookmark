@@ -3,10 +3,40 @@
   margin: 0 auto;
 }
 
-.section {
-  margin: 2rem 0;
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-light);
+  padding: 1rem;
+  border-radius: 8px;
 }
 
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.13s ease;
+}
+
+.radio:hover {
+  background: var(--color-med-light);
+}
+
+.radio input[type="radio"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.radio span {
+  color: var(--color-dark);
+  font-size: 0.95rem;
+}
 
 .dangerButton {
   padding: 0.6rem 1.2rem;

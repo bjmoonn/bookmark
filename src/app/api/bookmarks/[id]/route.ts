@@ -20,11 +20,12 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const id = await Promise.resolve(parseInt(params.id));
     const data = await request.json();
     const db = await getDB();
     
     const bookmarkIndex = db.bookmarks.findIndex(
-      (b: Bookmark) => b.id === parseInt(params.id)
+      (b: Bookmark) => b.id === id
     );
     
     if (bookmarkIndex === -1) {
@@ -43,7 +44,6 @@ export async function PATCH(
     };
     
     await saveDB(db);
-    console.log('Updated bookmark:', db.bookmarks[bookmarkIndex]); // debug log
     
     return NextResponse.json(db.bookmarks[bookmarkIndex]);
   } catch (error) {

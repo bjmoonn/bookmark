@@ -1,5 +1,128 @@
 {
-  "bookmarks": [],
-  "folders": [],
-  "tags": []
+  "bookmarks": [
+    {
+      "id": 1733721931420,
+      "favicon": "https://opengraph.githubassets.com/85e2d81585317791a2bd14eddbb19595234895b15c0d39dd34f47d745f06d7ee/emilkowalski/sonner",
+      "title": "GitHub - emilkowalski/sonner",
+      "url": "https://github.com/emilkowalski/sonner",
+      "summary": "An opinionated toast component for React",
+      "createdAt": "2024-12-09T05:25:31.420Z",
+      "tags": [
+        1733721780781,
+        1733721793073
+      ]
+    },
+    {
+      "id": 1733721918627,
+      "favicon": "https://avatars.githubusercontent.com/u/32949241?v=4?s=400",
+      "title": "bjmoonn - Overview",
+      "url": "https://github.com/bjmoonn",
+      "summary": "designing on-chain chaos. bjmoonn has 35 repositories available. Follow their code on GitHub",
+      "createdAt": "2024-12-09T05:25:18.627Z",
+      "tags": [
+        1733721780781,
+        1733721793073,
+        1733721806203
+      ]
+    },
+    {
+      "id": 1733721896130,
+      "favicon": "https://www.gravatar.com/avatar/1c31a96c0a474a6795637081bde42acc.png?s=500",
+      "title": "Final Project",
+      "url": "https://dtang.dev/teaching/2024/itp404/final-project/",
+      "summary": "5 points will be deducted for each day that your project submission is late. For the final project, you will develop a single page application (SPA) on a topic…",
+      "createdAt": "2024-12-09T05:24:56.130Z",
+      "tags": [
+        1733721851082
+      ]
+    },
+    {
+      "id": 1733721884447,
+      "favicon": "https://shibboleth.usc.edu/images/apple-touch-icon.png",
+      "title": "University of Southern California Monogram",
+      "url": "https://shibboleth.usc.edu/idp/profile/SAML2/Redirect/SSO?execution=e1s1",
+      "summary": "You may be seeing this page because you used the Back button while browsing a secure web site or application. Alternatively, you may have mistakenly bookmarked the web login form instead of the actual web site you wanted to bookmark or used a link created by somebody else who made the same mistake.",
+      "createdAt": "2024-12-09T05:24:44.447Z",
+      "tags": [
+        1733721806203
+      ]
+    },
+    {
+      "id": 1733721855911,
+      "favicon": "https://animations.dev/opengraph-image-pwu6ef.png?8b96219b81816960",
+      "title": "Animations on the web",
+      "url": "https://animations.dev",
+      "summary": "3,829 designers and engineers have purchased the course in 2024. The registration will reopen on Tuesday, January 14th for 10 days. You can sign up for the waitlist to receive behind-the-scenes content every 2 weeks. No spam, no nonsense.",
+      "createdAt": "2024-12-09T05:24:15.911Z",
+      "tags": [
+        1733721851082
+      ]
+    }
+  ],
+  "folders": [
+    {
+      "id": 1733721820298,
+      "name": "Design consulting project",
+      "bookmarks": [
+        1733721855911
+      ],
+      "createdAt": "2024-12-09T05:23:40.298Z"
+    },
+    {
+      "id": 1733721823062,
+      "name": "Research project",
+      "bookmarks": [
+        1733721918627,
+        1733721931420
+      ],
+      "createdAt": "2024-12-09T05:23:43.062Z"
+    },
+    {
+      "id": 1733721832416,
+      "name": "Finals prep",
+      "bookmarks": [
+        1733721884447,
+        1733721896130
+      ],
+      "createdAt": "2024-12-09T05:23:52.416Z"
+    }
+  ],
+  "tags": [
+    {
+      "id": 1733721780781,
+      "name": "UI/UX",
+      "bookmarks": [
+        1733721918627,
+        1733721931420
+      ],
+      "createdAt": "2024-12-09T05:23:00.781Z"
+    },
+    {
+      "id": 1733721793073,
+      "name": "Print design",
+      "bookmarks": [
+        1733721918627,
+        1733721931420
+      ],
+      "createdAt": "2024-12-09T05:23:13.073Z"
+    },
+    {
+      "id": 1733721806203,
+      "name": "Search engines",
+      "bookmarks": [
+        1733721884447,
+        1733721918627
+      ],
+      "createdAt": "2024-12-09T05:23:26.203Z"
+    },
+    {
+      "id": 1733721851082,
+      "name": "Engineering",
+      "bookmarks": [
+        1733721855911,
+        1733721896130
+      ],
+      "createdAt": "2024-12-09T05:24:11.082Z"
+    }
+  ]
 }
