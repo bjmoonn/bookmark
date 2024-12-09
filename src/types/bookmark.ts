@@ -14,6 +14,16 @@ interface Folder {
   createdAt: string;
 }
 
+// collection represents a curated list of bookmarks
+interface Collection {
+  id: number;
+  name: string;
+  description: string;
+  bookmarks: number[];
+  createdAt: string;
+  isPublic: boolean;
+}
+
 // bookmark represents a saved url with metadata
 interface Bookmark {
   id: number;
@@ -21,8 +31,9 @@ interface Bookmark {
   title: string;
   url: string;
   tags: number[];
+  collections: number[];
   summary: string;
   createdAt: string;
 }
 
-export type { Tag, Folder, Bookmark }; 
+export type { Tag, Folder, Collection, Bookmark }; 

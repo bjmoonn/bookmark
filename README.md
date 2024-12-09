@@ -13,8 +13,8 @@ AJAX requests for each type
 * [x] DELETE: Deleting bookmarks, tags, folders
 
 API Resources and Relationships
-* [x] 5+ API Resources
-* [x] 3+ Relationships
+* [x] 7 API Resources (/api/bookmarks, /api/tags, /api/folders, /api/collections, /api/wipe-db, /api/folders/[id], /api/tags/[id], /api/collections/[id], /api/bookmarks/[id])
+* [x] 3 Relationships (bookmarks -> tags, bookmarks -> folders, bookmarks -> collections)
 
 Form Elements
 * [x] Input: Link/Tag/Folder creation field
@@ -39,3 +39,6 @@ Document Title
 
 Display Notifications
 * [x] Display notifications using Sonner (similar to React Toastify, just prettier and easier to implement)
+
+### Additional Features
+Since it's a bookmarking app, "Build a bookmarks / favorites system from scratch for some resource in your application. A user should be able to add and remove a particular resource from their bookmarks / favorites section. When you display the resource in the bookmarks / favorites section, display information about the resource and the date/time of when the item was bookmarked / favorited." is completed

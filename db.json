@@ -5,7 +5,7 @@
       "favicon": "https://opengraph.githubassets.com/85e2d81585317791a2bd14eddbb19595234895b15c0d39dd34f47d745f06d7ee/emilkowalski/sonner",
       "title": "GitHub - emilkowalski/sonner",
       "url": "https://github.com/emilkowalski/sonner",
-      "summary": "An opinionated toast component for React",
+      "summary": "An opinionated toast component for React..",
       "createdAt": "2024-12-09T05:25:31.420Z",
       "tags": [
         1733721780781,
@@ -124,5 +124,6 @@
       ],
       "createdAt": "2024-12-09T05:24:11.082Z"
     }
-  ]
+  ],
+  "collections": []
 }

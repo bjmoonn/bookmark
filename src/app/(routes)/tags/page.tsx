@@ -19,7 +19,6 @@ function generateTagColor(name: string): string {
 }
 
 export default function TagsPage() {
-    // state for tags list and loading status
     const [tags, setTags] = useState<Tag[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -32,11 +31,21 @@ export default function TagsPage() {
     useEffect(() => {
         fetch('/api/tags')
             .then(res => res.json())
-            .then(setTags)
-            .catch(console.error);
+            .then(data => {
+                // Ensure data is an array before setting it
+                if (Array.isArray(data)) {
+                    setTags(data);
+                } else {
+                    console.error('Expected array of tags but got:', data);
+                    setTags([]);
+                }
+            })
+            .catch(error => {
+                console.error('Failed to fetch tags:', error);
+                setTags([]);
+            });
     }, []);
 
-    // create new tag
     async function handleAddTag(name: string) {
         setLoading(true);
         const newTag = {
@@ -54,7 +63,8 @@ export default function TagsPage() {
             });
 
             if (!response.ok) throw new Error('Failed to add tag');
-            setTags(prev => [...prev, newTag]);
+            const savedTag = await response.json();
+            setTags(prev => [...prev, savedTag]);
             toast.success('Tag created successfully');
         } catch (error) {
             console.error('Failed to add tag:', error);
@@ -63,7 +73,6 @@ export default function TagsPage() {
         setLoading(false);
     }
 
-    // update existing tag
     async function handleEditTag(id: number, data: { title: string }) {
         try {
             const response = await fetch(`/api/tags/${id}`, {
@@ -73,8 +82,9 @@ export default function TagsPage() {
             });
 
             if (!response.ok) throw new Error('Failed to update tag');
+            const updatedTag = await response.json();
             setTags(prev => prev.map(tag => 
-                tag.id === id ? { ...tag, name: data.title } : tag
+                tag.id === id ? updatedTag : tag
             ));
             toast.success('Tag updated successfully');
         } catch (error) {
@@ -83,7 +93,6 @@ export default function TagsPage() {
         }
     }
 
-    // delete tag
     async function handleDeleteTag(id: number) {
         try {
             const response = await fetch(`/api/tags/${id}`, {
@@ -107,7 +116,7 @@ export default function TagsPage() {
                 placeholder="Type to create tag"
             />
             <div className={styles.list}>
-                {tags.map(tag => (
+                {Array.isArray(tags) && tags.map(tag => (
                     <Link 
                         key={tag.id} 
                         href={`/tags/${tag.id}`}
@@ -124,6 +133,7 @@ export default function TagsPage() {
                         />
                     </Link>
                 ))}
+
             </div>
         </div>
     );

@@ -19,8 +19,18 @@ export default function FoldersPage() {
     useEffect(() => {
         fetch('/api/folders')
             .then(res => res.json())
-            .then(setFolders)
-            .catch(console.error);
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setFolders(data);
+                } else {
+                    console.error('Expected array of folders but got:', data);
+                    setFolders([]);
+                }
+            })
+            .catch(error => {
+                console.error('Failed to fetch folders:', error);
+                setFolders([]);
+            });
     }, []);
 
     async function handleAddFolder(name: string) {
@@ -40,7 +50,8 @@ export default function FoldersPage() {
             });
 
             if (!response.ok) throw new Error('Failed to add folder');
-            setFolders(prev => [...prev, newFolder]);
+            const savedFolder = await response.json();
+            setFolders(prev => [...prev, savedFolder]);
             toast.success('Folder created successfully');
         } catch (error) {
             console.error('Failed to add folder:', error);
@@ -58,8 +69,9 @@ export default function FoldersPage() {
             });
 
             if (!response.ok) throw new Error('Failed to update folder');
+            const updatedFolder = await response.json();
             setFolders(prev => prev.map(folder => 
-                folder.id === id ? { ...folder, name: data.title } : folder
+                folder.id === id ? updatedFolder : folder
             ));
             toast.success('Folder updated successfully');
         } catch (error) {
@@ -91,7 +103,7 @@ export default function FoldersPage() {
                 placeholder="Type to create folder"
             />
             <div className={styles.list}>
-                {folders.map(folder => (
+                {Array.isArray(folders) && folders.map(folder => (
                     <Link 
                         key={folder.id} 
                         href={`/folders/${folder.id}`}

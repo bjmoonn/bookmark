@@ -13,7 +13,7 @@ const API_KEY_TO_USE = process.env.NEXT_PUBLIC_LINK_API
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(false)
   const [links, setLinks] = useState<Bookmark[]>([])
-  const [pendingBookmark, setPendingBookmark] = useState<any>(null);
+  const [pendingBookmark, setPendingBookmark] = useState<Bookmark | null>(null);
 
   // set page title
   useEffect(() => {
@@ -24,8 +24,19 @@ export default function Home() {
   useEffect(() => {
     fetch('/api/bookmarks')
       .then(res => res.json())
-      .then(setLinks)
-      .catch(console.error);
+      .then(data => {
+        // Ensure data is an array before setting it
+        if (Array.isArray(data)) {
+          setLinks(data);
+        } else {
+          console.error('Expected array of bookmarks but got:', data);
+          setLinks([]);
+        }
+      })
+      .catch(error => {
+        console.error('Failed to fetch bookmarks:', error);
+        setLinks([]);
+      });
   }, [])
 
   async function handleAddLink(link: string) {
@@ -55,6 +66,7 @@ export default function Home() {
         url: linkPreview.url || formattedLink,
         summary: linkPreview.description || '',
         tags: [],
+        collections: [],
         createdAt: new Date().toISOString()
       });
     } catch (error) {
@@ -69,50 +81,51 @@ export default function Home() {
     if (!pendingBookmark) return;
     
     try {
-        // First save the bookmark
-        const bookmarkResponse = await fetch('/api/bookmarks', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                ...pendingBookmark,
-                tags: data.tags
-            })
+      // First save the bookmark
+      const bookmarkResponse = await fetch('/api/bookmarks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...pendingBookmark,
+          tags: data.tags
+        })
+      });
+      
+      if (!bookmarkResponse.ok) throw new Error('Failed to save bookmark');
+      
+      const savedBookmark = await bookmarkResponse.json();
+      setLinks(prev => [savedBookmark, ...prev]);
+
+      // Update folder if selected
+      if (data.folderId) {
+        const folderResponse = await fetch(`/api/folders/${data.folderId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookmarks: ['append', savedBookmark.id]
+          })
         });
-        
-        if (!bookmarkResponse.ok) throw new Error('Failed to save bookmark');
-        
-        setLinks(prev => [pendingBookmark, ...prev]);
 
-        // Update folder if selected
-        if (data.folderId) {
-            const folderResponse = await fetch(`/api/folders/${data.folderId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    bookmarks: ['append', pendingBookmark.id]
-                })
-            });
+        if (!folderResponse.ok) throw new Error('Failed to update folder');
+      }
 
-            if (!folderResponse.ok) throw new Error('Failed to update folder');
-        }
+      // Update all selected tags
+      for (const tagId of data.tags) {
+        const tagResponse = await fetch(`/api/tags/${tagId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookmarks: ['append', savedBookmark.id]
+          })
+        });
 
-        // Update all selected tags
-        for (const tagId of data.tags) {
-            const tagResponse = await fetch(`/api/tags/${tagId}`, {
-                method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    bookmarks: ['append', pendingBookmark.id]
-                })
-            });
+        if (!tagResponse.ok) throw new Error('Failed to update tag');
+      }
 
-            if (!tagResponse.ok) throw new Error('Failed to update tag');
-        }
-
-        toast.success('Bookmark added successfully');
+      toast.success('Bookmark added successfully');
     } catch (error) {
-        console.error('Failed to save bookmark:', error);
-        toast.error('Failed to save bookmark');
+      console.error('Failed to save bookmark:', error);
+      toast.error('Failed to save bookmark');
     }
 
     setPendingBookmark(null);
@@ -160,9 +173,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <LinkField handleAdd={handleAddLink} loading={loading} />
+      <LinkField handleAdd={handleAddLink} loading={loading} validateUrl />
       <div className={styles.links}>
-        {links?.map(link => (
+        {Array.isArray(links) && links.map(link => (
           <LinkItem 
             key={link.id}
             id={link.id}

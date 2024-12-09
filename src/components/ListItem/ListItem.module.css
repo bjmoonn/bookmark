@@ -199,3 +199,11 @@ a.normalize {
     height: 100%;
     border-radius: 50%;
 }
+
+.subtitle {
+    color: var(--color-med);
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

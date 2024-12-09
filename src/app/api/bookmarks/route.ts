@@ -1,57 +1,93 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
-import type { Bookmark, Tag, Folder } from '@/types/bookmark';
+import type { Bookmark } from '@/types/bookmark';
 
-const dbPath = path.join(process.cwd(), 'src/data/db.json');
-
-async function getDB() {
-  const db = await fs.readFile(dbPath, 'utf8');
-  return JSON.parse(db);
-}
-
-async function saveDB(db: any) {
-  await fs.writeFile(dbPath, JSON.stringify(db, null, 2));
-}
+const JSON_SERVER_URL = 'http://localhost:3001';
 
 // GET /api/bookmarks
 export async function GET() {
-  const db = await getDB();
-  return NextResponse.json(db.bookmarks);
+  try {
+    const response = await fetch(`${JSON_SERVER_URL}/bookmarks`);
+    const bookmarks = await response.json();
+    return NextResponse.json(bookmarks);
+  } catch (error) {
+    console.error('Failed to get bookmarks:', error);
+    return NextResponse.json(
+      { error: 'Failed to get bookmarks' },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/bookmarks
 export async function POST(request: Request) {
-  const bookmark: Bookmark = await request.json();
-  const db = await getDB();
-  
-  db.bookmarks.unshift(bookmark);
-  await saveDB(db);
-  
-  return NextResponse.json(bookmark);
+  try {
+    const bookmark = await request.json();
+    
+    const response = await fetch(`${JSON_SERVER_URL}/bookmarks`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bookmark)
+    });
+    
+    const savedBookmark = await response.json();
+    return NextResponse.json(savedBookmark);
+  } catch (error) {
+    console.error('Failed to create bookmark:', error);
+    return NextResponse.json(
+      { error: 'Failed to create bookmark' },
+      { status: 500 }
+    );
+  }
 }
 
 // DELETE /api/bookmarks
 export async function DELETE(request: Request) {
-  const { id } = await request.json();
-  const db = await getDB();
-  
-  // remove bookmark from bookmarks array
-  db.bookmarks = db.bookmarks.filter((b: Bookmark) => b.id !== id);
-  
-  // remove bookmark reference from all tags
-  db.tags = db.tags.map((tag: Tag) => ({
-    ...tag,
-    bookmarks: tag.bookmarks.filter((bookmarkId: number) => bookmarkId !== id)
-  }));
-  
-  // remove bookmark reference from all folders
-  db.folders = db.folders.map((folder: Folder) => ({
-    ...folder,
-    bookmarks: folder.bookmarks.filter((bookmarkId: number) => bookmarkId !== id)
-  }));
-  
-  await saveDB(db);
-  
-  return NextResponse.json({ success: true });
+  try {
+    const { id } = await request.json();
+    
+    // Delete bookmark
+    await fetch(`${JSON_SERVER_URL}/bookmarks/${id}`, {
+      method: 'DELETE'
+    });
+
+    // Update tags to remove bookmark reference
+    const tagsResponse = await fetch(`${JSON_SERVER_URL}/tags`);
+    const tags = await tagsResponse.json();
+    
+    for (const tag of tags) {
+      if (tag.bookmarks.includes(id)) {
+        await fetch(`${JSON_SERVER_URL}/tags/${tag.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookmarks: tag.bookmarks.filter((bookmarkId: number) => bookmarkId !== id)
+          })
+        });
+      }
+    }
+
+    // Update folders to remove bookmark reference
+    const foldersResponse = await fetch(`${JSON_SERVER_URL}/folders`);
+    const folders = await foldersResponse.json();
+    
+    for (const folder of folders) {
+      if (folder.bookmarks.includes(id)) {
+        await fetch(`${JSON_SERVER_URL}/folders/${folder.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bookmarks: folder.bookmarks.filter((bookmarkId: number) => bookmarkId !== id)
+          })
+        });
+      }
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Failed to delete bookmark:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete bookmark' },
+      { status: 500 }
+    );
+  }
 } 

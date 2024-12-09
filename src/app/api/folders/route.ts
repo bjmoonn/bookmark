@@ -1,47 +1,70 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
 import type { Folder } from '@/types/bookmark';
 
-const dbPath = path.join(process.cwd(), 'src/data/db.json');
-
-async function getDB() {
-  const db = await fs.readFile(dbPath, 'utf8');
-  return JSON.parse(db);
-}
-
-async function saveDB(db: any) {
-  await fs.writeFile(dbPath, JSON.stringify(db, null, 2));
-}
+const JSON_SERVER_URL = 'http://localhost:3001';
 
 // GET /api/folders
 export async function GET() {
-  const db = await getDB();
-  return NextResponse.json(db.folders);
+  try {
+    const response = await fetch(`${JSON_SERVER_URL}/folders`);
+    const folders = await response.json();
+    return NextResponse.json(folders);
+  } catch (error) {
+    console.error('Failed to get folders:', error);
+    return NextResponse.json(
+      { error: 'Failed to get folders' },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/folders
 export async function POST(request: Request) {
-  const folder: Folder = await request.json();
-  const db = await getDB();
-  
-  db.folders.push(folder);
-  await saveDB(db);
-  
-  return NextResponse.json(folder);
+  try {
+    const folder = await request.json();
+    
+    const response = await fetch(`${JSON_SERVER_URL}/folders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(folder)
+    });
+    
+    const savedFolder = await response.json();
+    return NextResponse.json(savedFolder);
+  } catch (error) {
+    console.error('Failed to create folder:', error);
+    return NextResponse.json(
+      { error: 'Failed to create folder' },
+      { status: 500 }
+    );
+  }
 }
 
 // PATCH /api/folders
 export async function PATCH(request: Request) {
-  const { id, bookmarks }: Folder = await request.json();
-  const db = await getDB();
-  
-  const folderIndex = db.folders.findIndex((f: Folder) => f.id === id);
-  if (folderIndex !== -1) {
-    db.folders[folderIndex].bookmarks = bookmarks;
-    await saveDB(db);
-    return NextResponse.json(db.folders[folderIndex]);
+  try {
+    const { id, bookmarks } = await request.json();
+    
+    const response = await fetch(`${JSON_SERVER_URL}/folders/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookmarks })
+    });
+    
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: 'Folder not found' },
+        { status: 404 }
+      );
+    }
+    
+    const updatedFolder = await response.json();
+    return NextResponse.json(updatedFolder);
+  } catch (error) {
+    console.error('Failed to update folder:', error);
+    return NextResponse.json(
+      { error: 'Failed to update folder' },
+      { status: 500 }
+    );
   }
-  
-  return NextResponse.json({ error: 'Folder not found' }, { status: 404 });
 } 

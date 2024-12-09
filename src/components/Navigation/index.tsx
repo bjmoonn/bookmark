@@ -15,25 +15,25 @@ const Navigation = () => {
         href="/" 
         className={pathname === '/' ? styles.active : ''}
       >
-        bookmarks
+        Bookmarks
       </Link>
       <Link 
         href="/folders" 
         className={pathname.startsWith('/folders') ? styles.active : ''}
       >
-        folders
+        Folders
       </Link>
       <Link 
         href="/tags" 
         className={pathname.startsWith('/tags') ? styles.active : ''}
       >
-        tags
+        Tags
       </Link>
       <Link 
         href="/settings" 
         className={pathname === '/settings' ? styles.active : ''}
       >
-        settings
+        Settings
       </Link>
     </nav>
   );

@@ -1,32 +1,41 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
 import type { Tag } from '@/types/bookmark';
 
-const dbPath = path.join(process.cwd(), 'src/data/db.json');
-
-async function getDB() {
-  const db = await fs.readFile(dbPath, 'utf8');
-  return JSON.parse(db);
-}
-
-async function saveDB(db: any) {
-  await fs.writeFile(dbPath, JSON.stringify(db, null, 2));
-}
+const JSON_SERVER_URL = 'http://localhost:3001';
 
 // GET /api/tags
 export async function GET() {
-  const db = await getDB();
-  return NextResponse.json(db.tags);
+  try {
+    const response = await fetch(`${JSON_SERVER_URL}/tags`);
+    const tags = await response.json();
+    return NextResponse.json(tags);
+  } catch (error) {
+    console.error('Failed to get tags:', error);
+    return NextResponse.json(
+      { error: 'Failed to get tags' },
+      { status: 500 }
+    );
+  }
 }
 
 // POST /api/tags
 export async function POST(request: Request) {
-  const tag: Tag = await request.json();
-  const db = await getDB();
-  
-  db.tags.push(tag);
-  await saveDB(db);
-  
-  return NextResponse.json(tag);
+  try {
+    const tag = await request.json();
+    
+    const response = await fetch(`${JSON_SERVER_URL}/tags`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(tag)
+    });
+    
+    const savedTag = await response.json();
+    return NextResponse.json(savedTag);
+  } catch (error) {
+    console.error('Failed to create tag:', error);
+    return NextResponse.json(
+      { error: 'Failed to create tag' },
+      { status: 500 }
+    );
+  }
 } 

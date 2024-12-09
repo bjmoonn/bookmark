@@ -1,37 +1,103 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import { NextResponse } from 'next/server';
 
-const dbPath = path.join(process.cwd(), 'src/data/db.json');
+const JSON_SERVER_URL = 'http://localhost:3001';
 
+// POST /api/wipe-db
 export async function POST(request: Request) {
   try {
     const { option } = await request.json();
-    const data = JSON.parse(await fs.readFile(dbPath, 'utf-8'));
 
     switch (option) {
       case 'all':
-        data.bookmarks = [];
-        data.folders = [];
-        data.tags = [];
+        // Wipe all data
+        await Promise.all([
+          fetch(`${JSON_SERVER_URL}/bookmarks`, { method: 'DELETE' }),
+          fetch(`${JSON_SERVER_URL}/folders`, { method: 'DELETE' }),
+          fetch(`${JSON_SERVER_URL}/tags`, { method: 'DELETE' }),
+          fetch(`${JSON_SERVER_URL}/collections`, { method: 'DELETE' })
+        ]);
+        
+        // Reset with empty arrays
+        await Promise.all([
+          fetch(`${JSON_SERVER_URL}/bookmarks`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([])
+          }),
+          fetch(`${JSON_SERVER_URL}/folders`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([])
+          }),
+          fetch(`${JSON_SERVER_URL}/tags`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([])
+          }),
+          fetch(`${JSON_SERVER_URL}/collections`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([])
+          })
+        ]);
         break;
+
       case 'bookmarks':
-        data.bookmarks = [];
-        // clear bookmark references from folders and tags too
-        data.folders = data.folders.map((folder: any) => ({ ...folder, bookmarks: [] }));
-        data.tags = data.tags.map((tag: any) => ({ ...tag, bookmarks: [] }));
+        // Delete all bookmarks
+        await fetch(`${JSON_SERVER_URL}/bookmarks`, { method: 'DELETE' });
+        await fetch(`${JSON_SERVER_URL}/bookmarks`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([])
+        });
+
+        // Clear bookmark references from folders and tags
+        const [folders, tags] = await Promise.all([
+          fetch(`${JSON_SERVER_URL}/folders`).then(res => res.json()),
+          fetch(`${JSON_SERVER_URL}/tags`).then(res => res.json())
+        ]);
+
+        await Promise.all([
+          ...folders.map((folder: any) => 
+            fetch(`${JSON_SERVER_URL}/folders/${folder.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ bookmarks: [] })
+            })
+          ),
+          ...tags.map((tag: any) => 
+            fetch(`${JSON_SERVER_URL}/tags/${tag.id}`, {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ bookmarks: [] })
+            })
+          )
+        ]);
         break;
+
       case 'folders':
-        data.folders = [];
+        // Delete all folders
+        await fetch(`${JSON_SERVER_URL}/folders`, { method: 'DELETE' });
+        await fetch(`${JSON_SERVER_URL}/folders`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([])
+        });
         break;
+
       case 'tags':
-        data.tags = [];
+        // Delete all tags
+        await fetch(`${JSON_SERVER_URL}/tags`, { method: 'DELETE' });
+        await fetch(`${JSON_SERVER_URL}/tags`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify([])
+        });
         break;
+
       default:
         throw new Error('Invalid wipe option');
     }
-
-    await fs.writeFile(dbPath, JSON.stringify(data, null, 2));
     
     return NextResponse.json({ message: `${option} wiped successfully` });
   } catch (error) {

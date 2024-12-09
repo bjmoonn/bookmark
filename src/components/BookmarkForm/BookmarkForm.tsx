@@ -8,9 +8,10 @@ interface BookmarkFormProps {
   title: string;
   onSave: (data: { tags: number[], folderId?: number }) => void;
   onCancel: () => void;
+  loading?: boolean;
 }
 
-export default function BookmarkForm({ title, onSave, onCancel }: BookmarkFormProps) {
+export default function BookmarkForm({ title, onSave, onCancel, loading = false }: BookmarkFormProps) {
   const [tags, setTags] = useState<Tag[]>([]);
   const [folders, setFolders] = useState<Folder[]>([]);
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
@@ -45,6 +46,7 @@ export default function BookmarkForm({ title, onSave, onCancel }: BookmarkFormPr
           <select 
             value={selectedFolder || ''} 
             onChange={(e) => setSelectedFolder(e.target.value ? Number(e.target.value) : undefined)}
+            disabled={loading}
           >
             <option value="">Uncategorized</option>
             {folders.map(folder => (
@@ -63,6 +65,7 @@ export default function BookmarkForm({ title, onSave, onCancel }: BookmarkFormPr
                 <input
                   type="checkbox"
                   checked={selectedTags.includes(tag.id)}
+                  disabled={loading}
                   onChange={(e) => {
                     if (e.target.checked) {
                       setSelectedTags(prev => [...prev, tag.id]);
@@ -78,11 +81,11 @@ export default function BookmarkForm({ title, onSave, onCancel }: BookmarkFormPr
         </div>
 
         <div className={styles.buttons}>
-          <button type="button" onClick={onCancel} className={styles.cancelButton}>
+          <button type="button" onClick={onCancel} className={styles.cancelButton} disabled={loading}>
             Cancel
           </button>
-          <button onClick={handleSubmit} className={styles.saveButton}>
-            Save
+          <button onClick={handleSubmit} className={styles.saveButton} disabled={loading}>
+            {loading ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>
