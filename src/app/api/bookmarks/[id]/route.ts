@@ -1,15 +1,14 @@
 import { NextResponse } from 'next/server';
-import type { Bookmark } from '@/types/bookmark';
 
 const JSON_SERVER_URL = 'http://localhost:3001';
 
 // PATCH /api/bookmarks/[id]
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
-    const id = await Promise.resolve(parseInt(params.id));
+    const id = await Promise.resolve(parseInt(context.params.id));
     const updates = await request.json();
 
     // Get current bookmark to preserve favicon

@@ -1,3 +1,11 @@
+# Bookmark: ITP 404 Final Project
+
+## Instructions
+- Clone the repo
+- Run `npm install`
+- Run `json-server --watch db.json --port 3001`
+- Run `npm run dev`
+
 ## Criteria
 
 Client-side routing with React Router
@@ -42,3 +50,15 @@ Display Notifications
 
 ### Additional Features
 Since it's a bookmarking app, "Build a bookmarks / favorites system from scratch for some resource in your application. A user should be able to add and remove a particular resource from their bookmarks / favorites section. When you display the resource in the bookmarks / favorites section, display information about the resource and the date/time of when the item was bookmarked / favorited." is completed
+
+
+### Testing
+11 tests, all passing.
+
+### Additional notes
+- Things not covered in class: 
+    - nextjs & app router (and NextRequest, the new params, etc)
+    - testing with typescript (had to get jest scripts from stackoverflow)
+    - sonner notifications (had to get sonner from npm, made the choice to use it instead of react toastify)
+    - typescript & type interfaces & etc
+

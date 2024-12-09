@@ -24,3 +24,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+yarn.lock
+src/app/utils/OutsideAlerter.tsx
+package-lock.json
+.vercel

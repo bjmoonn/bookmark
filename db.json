@@ -5,11 +5,10 @@
       "favicon": "https://opengraph.githubassets.com/85e2d81585317791a2bd14eddbb19595234895b15c0d39dd34f47d745f06d7ee/emilkowalski/sonner",
       "title": "GitHub - emilkowalski/sonner",
       "url": "https://github.com/emilkowalski/sonner",
-      "summary": "An opinionated toast component for React..",
+      "summary": "An opinionated toast component for React.//...",
       "createdAt": "2024-12-09T05:25:31.420Z",
       "tags": [
-        1733721780781,
-        1733721793073
+        1733721780781
       ]
     },
     {
@@ -52,7 +51,7 @@
       "favicon": "https://animations.dev/opengraph-image-pwu6ef.png?8b96219b81816960",
       "title": "Animations on the web",
       "url": "https://animations.dev",
-      "summary": "3,829 designers and engineers have purchased the course in 2024. The registration will reopen on Tuesday, January 14th for 10 days. You can sign up for the waitlist to receive behind-the-scenes content every 2 weeks. No spam, no nonsense.",
+      "summary": "3,829 designers and engineers have purchased the course in 2024. The registration will reopen on Tuesday, January 14th for 10 days. You can sign up for the waitlist to receive behind-the-scenes content every 2 weeks. No spam, no nonsense",
       "createdAt": "2024-12-09T05:24:15.911Z",
       "tags": [
         1733721851082
@@ -85,6 +84,12 @@
         1733721896130
       ],
       "createdAt": "2024-12-09T05:23:52.416Z"
+    },
+    {
+      "id": 1733727867738,
+      "name": "Google Drive",
+      "bookmarks": [],
+      "createdAt": "2024-12-09T07:04:27.738Z"
     }
   ],
   "tags": [
